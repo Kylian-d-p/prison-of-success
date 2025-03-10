@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="antialiased1">
+      <body className="antialiased">
         {children}
         <div className="bg-[url('/background.png')] fixed top-0 left-0 w-full h-full -z-10 bg-cover bg-center"></div>
       </body>
