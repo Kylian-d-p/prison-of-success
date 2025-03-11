@@ -36,46 +36,48 @@ export default function Play() {
   const choices: Choice[] = useMemo(
     () => [
       {
+        label: "Falsifier les rapports ?",
         options: [
           {
-            label: "Accepter l'offre et falsifier les rapports",
-            endingPoints: { whistleblower: 0, systemPuppet: -1, powerArchitect: 0, fall: 0 },
-          },
-          {
-            label: "Refuser l'offre, mais ne pas dénoncer",
+            label: "Oui",
             endingPoints: { whistleblower: 0, systemPuppet: 1, powerArchitect: 0, fall: 0 },
           },
           {
-            label: "Refuser et dénoncer l'offre",
-            endingPoints: { whistleblower: 1, systemPuppet: 2, powerArchitect: 0, fall: 0 },
-          },
-        ],
-        support: {
-          type: "mail",
-          subject: "Salut !",
-          from: "coucou@emiel.com",
-          content: `<p>Bonjour,</p>
-        <p>Je t'envoie ce mail pour te dire que tu as une mission à accomplir.</p>`,
-        },
-      },
-      {
-        label: "Quoi lui répondre ?",
-        options: [
-          {
-            label: "Oui, j'ai bien reçu le mail",
-            endingPoints: { whistleblower: 0, systemPuppet: 0, powerArchitect: 0, fall: 0 },
-          },
-          {
-            label: "Non, je n'ai pas reçu le mail",
-            endingPoints: { whistleblower: 0, systemPuppet: 0, powerArchitect: 0, fall: 0 },
+            label: "Non",
+            endingPoints: { whistleblower: 0, systemPuppet: 0, powerArchitect: 1, fall: 0 },
           },
         ],
         support: {
           type: "discussion",
           characterId: 2,
-          text: "Tu as bien reçu le mail ?",
+          text: "Les résultats de l’entreprise ne sont pas ceux promis aux investisseurs. Tu dois donc falsifier les rapport  de résultat de l’entreprise.",
         },
       },
+      {
+      label: "Quel est ta stratégie ?",
+      options: [
+        {
+          label: "Travailler honnêtement",
+          endingPoints: { whistleblower: 0, systemPuppet: 1, powerArchitect: 0, fall: 1 },
+        },
+        {
+          label: "Saboter son rival",
+          endingPoints: { whistleblower: 0, systemPuppet: 0, powerArchitect: 0, fall: 1 },
+        },
+        {
+          label: "Manipuler l'opinion pour te mettre en avant",
+          endingPoints: { whistleblower: 0, systemPuppet: 0, powerArchitect: 1, fall: 0 },
+        },
+      ],
+      support: {
+        type: "letter",
+        content: `<p>Cher employé,</p>
+        <p>Un poste de manager se libère. Tu n’es pas parmi les meilleurs candidats pour ce poste mais il t’intéresse, notamment pour son salaire. Il y a un obstacle principale, un de tes collègues bien plus compétent que toi .Pour l’obtenir, tu dois le surpasser..</p>`,
+      }
+    },
+    {
+      label: ""
+    }
     ],
     []
   );
