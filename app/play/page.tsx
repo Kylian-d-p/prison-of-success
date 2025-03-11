@@ -117,10 +117,10 @@ export default function Play() {
           <div className="bg-white text-black fixed top-0 right-1/2 -translate-y-full p-2 w-60 rounded-lg rounded-br-none text-2xl">
             <p>{choices[choiceIndex].support.text}</p>
           </div>
-          <Character2 className="absolute -scale-x-100" />
+          <Character2 className="absolute -scale-x-100 -z-10" />
         </div>
       )}
-      <div className="bg-white text-black rounded-xl p-4 text-3xl flex flex-col gap-2">
+      <div className="bg-white text-black rounded-xl p-4 text-3xl flex flex-col gap-2 z-10">
         {choices[choiceIndex].label && <p className="select-none">{choices[choiceIndex].label}</p>}
         <div className="flex flex-col items-center gap-2">
           {choices[choiceIndex].options.map((option, index) => (
