@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="fr">
       <body className="antialiased">
         {children}
-        <div className="bg-[url('/background.png')] fixed top-0 left-0 w-full h-full -z-10 bg-cover bg-center"></div>
+        <div className="bg-[url('/background.png')] fixed top-0 left-0 w-full h-full -z-20 bg-cover bg-center"></div>
       </body>
     </html>
   );
