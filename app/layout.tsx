@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Prison of Sucess",
+  title: "The Red Line",
   description: "Faites prospérer votre boite",
 };
 
