@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { use, useEffect, useMemo, useRef, useState } from "react";
 import Character1 from "../../components/characters/character1";
 import Character2 from "../../components/characters/character2";
@@ -115,7 +115,7 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
           from: "presse@journal.com",
           subject: "Interview exclusive",
           content: `<p>Bonjour,</p>
-                <p>Suite à vos récentes révélations, nous souhaitons vous interviewer afin de mieux comprendre la situation et que le grand publique fasse la rencontre du lanceur d'alerte.</p>
+                <p>Suite à vos récentes révélations, nous souhaitons vous interviewer afin de mieux comprendre la situation et que le grand public fasse la rencontre du lanceur d'alerte.</p>
                 <p>Quand êtes-vous disponible ?</p>`,
         },
       },
@@ -164,7 +164,7 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
       },
       q7: {
         label:
-          "Vous savez que l'entreprise n'est pas réglo sur certains sujets, mais la chute de l'entreprise supprimerai votre poste. Que faites-vous ?",
+          "Vous savez que l'entreprise n'est pas réglo sur certains sujets, mais la chute de l'entreprise supprimerait votre poste. Que faites-vous ?",
         options: [
           {
             label: "Collaborer avec les enquêteurs et fournir des preuves",
@@ -245,9 +245,11 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
         options: [
           {
             label: "Ignorer et continuer à militer pour un monde plus éthique",
+            nextChoiceId: "q13",
           },
           {
             label: "Payer pour faire taire cette personne et protéger votre réputation",
+            nextChoiceId: "q14",
           },
         ],
         support: {
@@ -264,9 +266,11 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
         options: [
           {
             label: "Refuser et dénoncer publiquement cette tentative de corruption",
+            nextChoiceId: "q15",
           },
           {
             label: "Accepter et disparaître du paysage médiatique",
+            nextChoiceId: "q16",
           },
         ],
         support: {
@@ -279,13 +283,143 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
             <p>En contrepartie, nous vous offrons une compensation généreuse.</p>`,
         },
       },
+      q13: {
+        label: "Vous avez ignoré les menaces. Comment gérez-vous les conséquences ?",
+        options: [
+          {
+            label: "Faire face aux révélations et assumer vos erreurs",
+          },
+          {
+            label: "Tenter de discréditer la source des informations",
+          },
+        ],
+        support: {
+          type: "mail",
+          from: "presse@journal.com",
+          subject: "Révélations choquantes",
+          content: `<p>Bonjour,</p>
+            <p>Des informations compromettantes sur vous ont été publiées.</p>
+            <p>Comment souhaitez-vous réagir ?</p>`,
+        },
+      },
+      q14: {
+        label: "Vous avez payé pour faire taire la personne. Comment gérez-vous la situation ?",
+        options: [
+          {
+            label: "Continuer à militer tout en gardant un œil sur vos arrières",
+          },
+          {
+            label: "Devenir paranoïaque et limiter vos interactions publiques",
+          },
+        ],
+        support: {
+          type: "discussion",
+          characterId: 2,
+          text: "Vous avez réussi à étouffer l'affaire, mais vous savez que cette personne pourrait revenir.",
+        },
+      },
+      q15: {
+        label: "Vous avez dénoncé le lobby. Comment réagissent-ils ?",
+        options: [
+          {
+            label: "Ils lancent une campagne de diffamation contre vous",
+            nextChoiceId: "q17",
+          },
+          {
+            label: "Ils tentent de vous corrompre à nouveau avec une offre encore plus importante",
+            nextChoiceId: "q18",
+          },
+        ],
+        support: {
+          type: "mail",
+          from: "lobby@businesspower.com",
+          subject: "Vous regretterez cela",
+          content: `<p>Bonjour,</p>
+            <p>Vous avez fait un grave erreur en nous défiant.</p>
+            <p>Nous allons vous le faire regretter.</p>`,
+        },
+      },
+      q16: {
+        label: "Vous avez accepté l'offre du lobby. Comment gérez-vous votre nouvelle vie ?",
+        options: [
+          {
+            label: "Investir dans des projets éthiques pour vous racheter",
+          },
+          {
+            label: "Disparaître complètement et vivre dans l'anonymat",
+          },
+        ],
+        support: {
+          type: "mail",
+          from: "lobby@businesspower.com",
+          subject: "Merci",
+          content: `<p>Bonjour,</p>
+            <p>Nous vous remercions pour votre coopération.</p>
+            <p>Votre silence est apprécié.</p>`,
+        },
+      },
+      q17: {
+        label: "Le lobby a lancé une campagne de diffamation contre vous. Comment réagissez-vous ?",
+        options: [
+          {
+            label: "Porter plainte et défendre votre réputation en justice",
+          },
+          {
+            label: "Utiliser les médias pour retourner la situation en votre faveur",
+          },
+        ],
+        support: {
+          type: "mail",
+          from: "avocat@justice.com",
+          subject: "Défense juridique",
+          content: `<p>Bonjour,</p>
+            <p>Nous pouvons vous aider à combattre cette diffamation.</p>
+            <p>Que souhaitez-vous faire ?</p>`,
+        },
+      },
+      q18: {
+        label: "Le lobby vous propose une nouvelle offre. Que faites-vous ?",
+        options: [
+          {
+            label: "Refuser à nouveau et continuer à les dénoncer",
+          },
+          {
+            label: "Accepter et disparaître définitivement",
+          },
+        ],
+        support: {
+          type: "mail",
+          from: "lobby@businesspower.com",
+          subject: "Dernière chance",
+          content: `<p>Bonjour,</p>
+            <p>Nous vous offrons une dernière opportunité de vous retirer.</p>
+            <p>Cette fois, l'offre est irrésistible.</p>`,
+        },
+      },
     }),
     []
   );
 
   const completeChoice = (nextChoiceId?: string) => () => {
     setLoading(true);
-    if (!nextChoiceId) return;
+    let currentStorage = localStorage.getItem("choicesHistory") || "";
+    if (currentStorage.length === 0) {
+      currentStorage = "Premier choix : \n";
+    } else {
+      currentStorage += "Choix suivant : \n";
+    }
+    localStorage.setItem(
+      "choicesHistory",
+      currentStorage +
+        `Question : ${choices[choiceId].label}
+      \nContenu du support : ${choices[choiceId].support.type === "discussion" ? choices[choiceId].support.text : choices[choiceId].support.content}
+      \nChoix du joueur : ${choices[choiceId].options.find((option) => option.nextChoiceId === nextChoiceId)?.label}\n\n`
+    );
+    console.log(!nextChoiceId);
+    
+    if (!nextChoiceId) {
+      redirect("/play/end");
+    };
     router.push(`/play/${nextChoiceId}`);
   };
 

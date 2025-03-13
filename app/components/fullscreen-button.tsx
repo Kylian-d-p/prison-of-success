@@ -29,7 +29,7 @@ export default function FullscreenButton() {
   }, []);
 
   return (
-    <button className="fixed top-4 right-4 p-2 rounded-md bg-gray-800 text-white" onClick={handleClick}>
+    <button className="z-50 fixed top-4 right-4 p-2 rounded-md bg-gray-800 text-white" onClick={handleClick}>
       {isFullscreen ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
