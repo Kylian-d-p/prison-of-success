@@ -93,9 +93,10 @@ const Maze: React.FC = () => {
 
         // Vérifier si le joueur a atteint la sortie
         if (maze[newY][newX] === "E") {
-          alert("Félicitations, vous avez trouvé la sortie !");
-          setMaze(generateMaze(MAZE_WIDTH, MAZE_HEIGHT)); // Régénérer le labyrinthe
-          setPlayerPosition({ x: 1, y: 1 }); // Réinitialiser la position du joueur
+          alert("Félicitations, vous vous êtes échappé");
+          window.location.href = "/play";
+          // setMaze(generateMaze(MAZE_WIDTH, MAZE_HEIGHT)); // Régénérer le labyrinthe
+          // setPlayerPosition({ x: 1, y: 1 }); // Réinitialiser la position du joueur
         }
       }
     },

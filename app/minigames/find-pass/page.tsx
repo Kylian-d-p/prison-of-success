@@ -17,11 +17,13 @@ export default function FindPass() {
 
     e.currentTarget.reset();
     if (password === "password") {
+      alert("Vous avez trouvé le mot de passe, vous avez réussi le sabotage.");
       return window.location.href = "/play";
     }
     setAttempts(attempts - 1);
     console.log(attempts);
     if (attempts === 0) {
+      alert("Vous n'avez pas trouvé le mot de passe, votre sabotage a échoué.");
       return window.location.href = "/play";
     }
   }
