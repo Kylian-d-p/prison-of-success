@@ -29,3 +29,13 @@ body {
   color: var(--foreground);
   font-family: "Jersey15", Arial, Helvetica, sans-serif;
 }
+
+.text-bordered {
+  --color: #90075e;
+  text-shadow: 2px 0 #90075e, -2px 0 #90075e, 0 2px #90075e, 0 -2px #90075e, 1px 1px #90075e, -1px -1px #90075e, 1px -1px #90075e, -1px 1px #90075e;
+}
+
+.text-bordered-2 {
+  --color: #90075ec1;
+  text-shadow: 2px 0 var(--color), -2px 0 var(--color), 0 2px var(--color), 0 -2px var(--color), 1px 1px var(--color), -1px -1px var(--color), 1px -1px var(--color), -1px 1px var(--color);
+}

@@ -11,7 +11,7 @@ export default function Home() {
     "En rejoignant nos rangs, vous faites désormais partie d’une élite. Votre mission est simple : analyser, anticiper et optimiser.",
     "DataCorp doit être prospère. Chaque décision que vous prendrez aura un impact réel, chaque choix définira votre avenir au sein de DataCorp.",
     "Nous récompensons l’efficacité. Nous valorisons l’ambition. Et surtout, nous n’avons aucune place pour l’échec.",
-    "D'ailleurs, je viens de recevoir votre premier dossier à traiter. Moi je te laisse, j'ai un rendez-vous important.",
+    "D'ailleurs, je viens de recevoir votre premier dossier à traiter. Je vous laisse, j'ai un rendez-vous important.",
   ]);
   const [textIndex, setTextIndex] = useState(0);
 
