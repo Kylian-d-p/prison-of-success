@@ -1,25 +1,23 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 
-// Constantes pour la taille du labyrinthe
 const MAZE_WIDTH = 15;
 const MAZE_HEIGHT = 15;
 const CELL_SIZE = 30;
 
-// Types pour les directions et la position du joueur
 type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 type Position = { x: number; y: number };
 
-// Génération du labyrinthe avec l'algorithme de recursive backtracking
+
 const generateMaze = (width: number, height: number): string[][] => {
   const maze: string[][] = Array(height)
     .fill(null)
-    .map(() => Array(width).fill("#")); // Remplir le labyrinthe avec des murs
+    .map(() => Array(width).fill("#")); 
 
   const carve = (x: number, y: number) => {
-    maze[y][x] = " "; // Creuser un chemin
+    maze[y][x] = " "; 
 
-    // Directions aléatoires
+
     const directions: Direction[] = ["UP", "DOWN", "LEFT", "RIGHT"];
     directions.sort(() => Math.random() - 0.5);
 
@@ -35,16 +33,16 @@ const generateMaze = (width: number, height: number): string[][] => {
         ny < height &&
         maze[ny][nx] === "#"
       ) {
-        maze[ny][nx] = " "; // Creuser un chemin
-        maze[y + (ny - y) / 2][x + (nx - x) / 2] = " "; // Creuser entre les deux cellules
+        maze[ny][nx] = " "; 
+        maze[y + (ny - y) / 2][x + (nx - x) / 2] = " "; 
         carve(nx, ny);
       }
     }
   };
 
-  carve(1, 1); // Commencer à creuser à partir d'une position aléatoire
-  maze[1][1] = "P"; // Position de départ du joueur
-  maze[height - 2][width - 2] = "E"; // Position de la sortie
+  carve(1, 1); 
+  maze[1][1] = "P"; 
+  maze[height - 2][width - 2] = "E"; 
   return maze;
 };
 
@@ -56,12 +54,12 @@ const Maze: React.FC = () => {
   });
   const [orientation, setOrientation] = useState<"RIGHT" | "LEFT">("RIGHT");
 
-  // Générer le labyrinthe au chargement du composant
+  
   useEffect(() => {
     setMaze(generateMaze(MAZE_WIDTH, MAZE_HEIGHT));
   }, []);
 
-  // Fonction pour déplacer le joueur
+
   const movePlayer = useCallback(
     (direction: Direction) => {
       const { x, y } = playerPosition;
@@ -87,23 +85,19 @@ const Maze: React.FC = () => {
           return;
       }
 
-      // Vérifier si le mouvement est valide
       if (maze[newY] && maze[newY][newX] !== "#") {
         setPlayerPosition({ x: newX, y: newY });
 
-        // Vérifier si le joueur a atteint la sortie
         if (maze[newY][newX] === "E") {
           alert("Félicitations, vous vous êtes échappé");
           window.location.href = "/play";
-          // setMaze(generateMaze(MAZE_WIDTH, MAZE_HEIGHT)); // Régénérer le labyrinthe
-          // setPlayerPosition({ x: 1, y: 1 }); // Réinitialiser la position du joueur
+   
         }
       }
     },
     [maze, playerPosition]
   );
 
-  // Gestion des touches du clavier
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       switch (event.key) {
@@ -177,7 +171,7 @@ const Maze: React.FC = () => {
           ))}
         </div>
 
-        {/* Boutons de déplacement */}
+        
         <div
           style={{
             marginTop: "20px",
@@ -198,7 +192,7 @@ const Maze: React.FC = () => {
               height="50px"
               viewBox="0 0 3000.000000 2000.000000"
               preserveAspectRatio="xMidYMid meet"
-              className="transform rotate-90"
+              className="transform rotate-90 hue-rotate-90"
             >
               <g
                 transform="translate(0.000000,2000.000000) scale(0.100000,-0.100000)"
