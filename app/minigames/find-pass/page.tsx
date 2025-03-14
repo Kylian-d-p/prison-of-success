@@ -16,7 +16,7 @@ export default function FindPass() {
     }
 
     e.currentTarget.reset();
-    if (password === "password") {
+    if (password === "rouge") {
       return window.location.href = "/minigames/find-pass/congratulation";
     }
     setAttempts(attempts - 1);
@@ -46,6 +46,7 @@ export default function FindPass() {
           </button>
         </div>
       </form>
+      <div className='fixed top-2.5 left-5 text-2xl'>nombre d'essais restant: {attempts}</div>
     </div>
   );
 }
