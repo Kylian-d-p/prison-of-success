@@ -461,7 +461,7 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
       )}
       {choices[choiceId].support.type === "discussion" && (
         <>
-          <div className="bg-[#bd77a5d0] backdrop-blur-xs shadow-[0_0_0_2px_#bd77a5d0] text-white fixed top-5 right-[250px] p-2 max-w-96 w-full rounded-lg rounded-br-none text-2xl">
+          <div className="bg-[#bd77a5d0] backdrop-blur-xs shadow-[0_0_0_2px_#bd77a5d0] text-white text-bordered fixed top-5 right-[250px] p-2 max-w-96 w-full rounded-lg rounded-br-none text-2xl">
             <p>{choices[choiceId].support.text}</p>
           </div>
           <div className="fixed w-[300px] h-[700px] bottom-0 right-5 translate-y-1/4">
