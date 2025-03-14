@@ -25,9 +25,9 @@ const Countdown: React.FC<CountdownProps> = ({ seconds }) => {
   };
 
   return (
-    <div className="fixed top-3 left-5 p-4 bg-transparent text-white text-2.5 xl">
-      <h2>Compte à rebours</h2>
-      <p>{timeLeft > 0 ? formatTime(timeLeft) : window.location.href ="/minigames/maze/fail"}</p>
+    <div className="fixed top-3 left-3 p-4 bg-transparent text-white text-3xl">
+      <h2>Temps restant :</h2>
+      <p className="text-5xl">{timeLeft > 0 ? formatTime(timeLeft) : window.location.href ="/minigames/maze/fail"}</p>
     </div>
   );
 };
