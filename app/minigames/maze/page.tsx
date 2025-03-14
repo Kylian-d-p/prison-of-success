@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-
+import CountdownComponent from "./t/test";
 const MAZE_WIDTH = 15;
 const MAZE_HEIGHT = 15;
 const CELL_SIZE = 30;
@@ -8,15 +8,13 @@ const CELL_SIZE = 30;
 type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 type Position = { x: number; y: number };
 
-
 const generateMaze = (width: number, height: number): string[][] => {
   const maze: string[][] = Array(height)
     .fill(null)
-    .map(() => Array(width).fill("#")); 
+    .map(() => Array(width).fill("#"));
 
   const carve = (x: number, y: number) => {
-    maze[y][x] = " "; 
-
+    maze[y][x] = " ";
 
     const directions: Direction[] = ["UP", "DOWN", "LEFT", "RIGHT"];
     directions.sort(() => Math.random() - 0.5);
@@ -33,16 +31,16 @@ const generateMaze = (width: number, height: number): string[][] => {
         ny < height &&
         maze[ny][nx] === "#"
       ) {
-        maze[ny][nx] = " "; 
-        maze[y + (ny - y) / 2][x + (nx - x) / 2] = " "; 
+        maze[ny][nx] = " ";
+        maze[y + (ny - y) / 2][x + (nx - x) / 2] = " ";
         carve(nx, ny);
       }
     }
   };
 
-  carve(1, 1); 
-  maze[1][1] = "P"; 
-  maze[height - 2][width - 2] = "E"; 
+  carve(1, 1);
+  maze[1][1] = "P";
+  maze[height - 2][width - 2] = "E";
   return maze;
 };
 
@@ -54,11 +52,9 @@ const Maze: React.FC = () => {
   });
   const [orientation, setOrientation] = useState<"RIGHT" | "LEFT">("RIGHT");
 
-  
   useEffect(() => {
     setMaze(generateMaze(MAZE_WIDTH, MAZE_HEIGHT));
   }, []);
-
 
   const movePlayer = useCallback(
     (direction: Direction) => {
@@ -89,9 +85,7 @@ const Maze: React.FC = () => {
         setPlayerPosition({ x: newX, y: newY });
 
         if (maze[newY][newX] === "E") {
-          alert("Félicitations, vous vous êtes échappé");
-          window.location.href = "/play";
-   
+          window.location.href = "/minigames/maze/congratulation";
         }
       }
     },
@@ -131,6 +125,7 @@ const Maze: React.FC = () => {
         alignItems: "center",
       }}
     >
+      <CountdownComponent seconds={30} />
       <h1 className="text-8xl mb-25">Labyrinthe</h1>
       <div className="flex w-full justify-evenly h-sreen">
         <div style={{ border: "2px solid black" }}>
@@ -171,7 +166,6 @@ const Maze: React.FC = () => {
           ))}
         </div>
 
-        
         <div
           style={{
             marginTop: "20px",
