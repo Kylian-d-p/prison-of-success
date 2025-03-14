@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import FullscreenButton from "./components/fullscreen-button";
+import ResetButton from "./components/reset-button";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body className="antialiased">
         {children}
         <FullscreenButton />
+        <ResetButton />
         <div className="bg-[url('/background.png')] fixed top-0 left-0 w-full h-full -z-20 bg-cover bg-center"></div>
       </body>
     </html>

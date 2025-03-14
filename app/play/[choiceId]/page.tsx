@@ -17,12 +17,13 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
   type Option = {
     label: string;
     nextChoiceId?: string;
+    minigame?: string;
   };
 
   type Support =
     | { type: "mail"; subject: string; from: string; content: string }
     | { type: "letter"; content: string }
-    | { type: "discussion"; characterId: 2 | 3; text: string };
+    | { type: "discussion"; characterId: 2; text: string };
 
   type Choices = {
     [key: string]: {
@@ -58,8 +59,8 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
         label: "Comment allez-vous réagir aux soupçons de fraude interne ?",
         options: [
           {
-            label: "Enquêter discrètement",
-            nextChoiceId: "q3",
+            label: "Enquêter discrètement, requiert de trouver le mot de passe du PC admin",
+            minigame: "find-pass",
           },
           {
             label: "Dénoncer publiquement la situation",
@@ -319,14 +320,14 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
         },
       },
       q15: {
-        label: "Vous avez dénoncé le lobby. Comment réagissent-ils ?",
+        label: "Vous avez dénoncé le lobby. Quelle est votre prochaine action ?",
         options: [
           {
-            label: "Ils lancent une campagne de diffamation contre vous",
+            label: "Défendre votre réputation face à leur campagne de diffamation",
             nextChoiceId: "q17",
           },
           {
-            label: "Ils tentent de vous corrompre à nouveau avec une offre encore plus importante",
+            label: "Refuser leur nouvelle offre de corruption et continuer à les dénoncer",
             nextChoiceId: "q18",
           },
         ],
@@ -335,7 +336,7 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
           from: "lobby@businesspower.com",
           subject: "Vous regretterez cela",
           content: `<p>Bonjour,</p>
-            <p>Vous avez fait un grave erreur en nous défiant.</p>
+            <p>Vous avez fait une grave erreur en nous défiant.</p>
             <p>Nous allons vous le faire regretter.</p>`,
         },
       },
@@ -400,7 +401,7 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
     []
   );
 
-  const completeChoice = (nextChoiceId?: string) => () => {
+  const completeChoice = (nextChoiceId?: string, minigame?: string) => () => {
     setLoading(true);
     let currentStorage = localStorage.getItem("choicesHistory") || "";
     if (currentStorage.length === 0) {
@@ -415,18 +416,20 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
       \nContenu du support : ${choices[choiceId].support.type === "discussion" ? choices[choiceId].support.text : choices[choiceId].support.content}
       \nChoix du joueur : ${choices[choiceId].options.find((option) => option.nextChoiceId === nextChoiceId)?.label}\n\n`
     );
-    console.log(!nextChoiceId);
-    
-    if (!nextChoiceId) {
+
+    if (minigame) {
+      router.push("/minigames/" + minigame);
+    } else if (nextChoiceId) {
+      router.push(`/play/${nextChoiceId}`);
+    } else {
       redirect("/play/end");
-    };
-    router.push(`/play/${nextChoiceId}`);
+    }
   };
 
   useEffect(() => {
     setTimeout(() => {
       setInitializing(false);
-    }, 2000);
+    }, 0);
   }, []);
 
   useEffect(() => {
@@ -451,14 +454,14 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
         </div>
       )}
       {choices[choiceId].support.type === "letter" && (
-        <div className="p-2 rounded-2xl bg-[#bd77a5d0] backdrop-blur-xs shadow-[0_0_0_2px_#986084d0] text-white text-2xl max-w-lg self-end relative">
+        <div className="p-2 rounded-2xl bg-[#bd77a5d0] backdrop-blur-xs shadow-[0_0_0_2px_#986084d0] text-white text-bordered text-2xl max-w-lg self-end relative">
           <Image alt="" src="/stamp.png" width={50} height={50} className="absolute top-2 right-2 invert" />
           <p ref={letterContentRef}></p>
         </div>
       )}
       {choices[choiceId].support.type === "discussion" && (
         <>
-          <div className="bg-[#bd77a5d0] backdrop-blur-xs shadow-[0_0_0_2px_#bd77a5d0] text-white fixed top-5 left-1/2 p-2 max-w-96 w-full rounded-lg rounded-br-none text-2xl">
+          <div className="bg-[#bd77a5d0] backdrop-blur-xs shadow-[0_0_0_2px_#bd77a5d0] text-white fixed top-5 right-[250px] p-2 max-w-96 w-full rounded-lg rounded-br-none text-2xl">
             <p>{choices[choiceId].support.text}</p>
           </div>
           <div className="fixed w-[300px] h-[700px] bottom-0 right-5 translate-y-1/4">
@@ -473,7 +476,7 @@ export default function Play({ params }: { params: Promise<{ choiceId: string }>
             <button
               key={index}
               disabled={loading || initializing}
-              onClick={completeChoice(option.nextChoiceId)}
+              onClick={completeChoice(option.nextChoiceId, option.minigame)}
               className="p-2 bg-[#ef98a9c0] text-bordered-2 rounded-xl w-full transition-colors cursor-pointer font-medium"
             >
               {option.label}

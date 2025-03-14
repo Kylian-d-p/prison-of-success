@@ -6,39 +6,29 @@ import { useEffect, useRef, useState } from "react";
 export default function End() {
   const textRef = useRef<HTMLParagraphElement>(null);
   const [generating, setGenerating] = useState(true);
+  const [initializing, setInitializing] = useState(true);
+  const hasFetched = useRef(false); // Référence pour garder une trace de si la requête a déjà été effectuée
 
   useEffect(() => {
-    let isMounted = true;
+    if (hasFetched.current) return; // Si la requête a déjà été effectuée, on ne fait rien
+    hasFetched.current = true; // On marque que la requête a été effectuée
 
     const generate = async () => {
-      const generationRes = await fetch(`${process.env.NEXT_PUBLIC_OLLAMA_API}/api/generate`, {
+      const generationRes = await fetch("/api/end", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          stream: true,
-          model: "llama3.1:latest",
-          prompt: `Ton but va être de déterminer la personnalité d'un joueur à partir de ses prises de décisions dans l'environnement d'une entreprise, DataCorp.
-      Tu dois retourner un texte qui décrit le joueur et ses choix, s'ils sont moraux ou non. Tu dois également écrire une très courte suite à l'histoire.
-      N'utilises pas de mise en forme spécifique, juste du texte brut.
-      Tu t'adresses directement au joueur.
-      Le texte doit être concis et clair.
-      Le premier paragraphe doit conclure l'histoire du joueur en mettant un terme à tout suspense.
-      Le deuxième paragraphe doit décrire le joueur, ses choix et sa personnalité, en commençant par "Vous êtes un joueur...".
-      Et enfin une phrase de remerciement.
-      Le joueur a été soumis a plusieurs dilemmes moraux et voici la liste de ses choix :\n
-      ${localStorage.getItem("choicesHistory")}`,
-        }),
+        body: JSON.stringify({ choicesHistory: localStorage.getItem("choicesHistory") || "" }),
       });
 
       if (generationRes.ok && generationRes.body && textRef.current) {
-        if (!isMounted) return;
         const reader = generationRes.body.getReader();
         const decoder = new TextDecoder();
         let done = false;
         let buffer: string | undefined = "";
         textRef.current.innerText = "";
+        setInitializing(false);
 
         while (!done) {
           const { value, done: doneReading } = await reader.read();
@@ -52,27 +42,52 @@ export default function End() {
             lines.forEach((line) => {
               if (line.trim() && textRef.current) {
                 const spanElement = document.createElement("span");
-                spanElement.innerText = JSON.parse(line).response;
+                line = line.replace("data: ", "");
+                try {
+                  JSON.parse(line);
+                } catch {
+                  return;
+                }
+                spanElement.classList.add("opacity-0");
+                spanElement.classList.add("transition-opacity");
+                spanElement.innerText = JSON.parse(line).choices[0].delta.content;
                 textRef.current.appendChild(spanElement);
+                setTimeout(() => {
+                  spanElement.classList.remove("opacity-0");
+                }, 100);
               }
             });
           }
         }
-        setGenerating(false);
-      } else {
-        alert("Aïe... Il y a eu une erreur.");
       }
+      setGenerating(false);
     };
 
     generate();
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   return (
     <div className="bg-[#ff9eb1c0] flex flex-col gap-2 backdrop-blur-xs shadow-[0_0_0_2px_#d07c8d] text-white text-bordered fixed top-5 left-6 right-5 bottom-5 rounded-xl p-4 text-3xl overflow-y-auto">
+      <h1 className="text-center text-6xl py-5">FIN</h1>
+      {initializing && (
+        <div className="flex flex-col items-center gap-2">
+          <p>Génération de votre fin personnalisée...</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="animate-spin"
+          >
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+        </div>
+      )}
       <p ref={textRef}></p>
       {!generating && (
         <Link href={"/"} className="self-center">
